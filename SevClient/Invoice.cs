@@ -15,11 +15,21 @@ namespace SevDeskClient
     {
         [JsonProperty("objectName")]
         public override string ObjectName { get; set; } = "Invoice";
-        public string invoiceNumber { get; set; }
-        public Contact contact { get; set; }
-        public string create { get; set; }
-        public string update { get; set; }
-        public DateTime? invoiceDate { get; set; } = DateTime.Now;
+
+        [JsonProperty("invoiceNumber")]
+        public string InvoiceNumber { get; set; }
+
+        [JsonProperty("contact")]
+        public Contact Contact { get; set; }
+
+        [JsonProperty("create")]
+        public string Create { get; set; }
+
+        [JsonProperty("update")]
+        public string Update { get; set; }
+
+        [JsonProperty("invoiceDate")]
+        public DateTime? InvoiceDate { get; set; } = DateTime.Now;
         public string header { get; set; } = "Rechnung";
         public string headText { get; set; }
         public string footText { get; set; }
@@ -108,12 +118,12 @@ namespace SevDeskClient
             restRequest.Resource = "Invoice/Factory/saveInvoice";
 
             // Neue Rechnungsnummervergeben wenn keine vorhanden
-            if (String.IsNullOrWhiteSpace(this.invoiceNumber))
+            if (String.IsNullOrWhiteSpace(this.InvoiceNumber))
             {
                 string reNr;
                 if (FactoryGetNextInvoiceNumber(out reNr) == HttpStatusCode.OK)
                 {
-                    this.invoiceNumber = reNr;
+                    this.InvoiceNumber = reNr;
                     this.header += $" {reNr}";
                 }
 

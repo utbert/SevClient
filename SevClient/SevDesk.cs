@@ -90,7 +90,7 @@ namespace SevDeskClient
             {
                 if (f.paymentMethod != null) f.paymentMethod = paymentMethods.SingleOrDefault(s => s.Id == f.paymentMethod.Id) ?? f.paymentMethod;
 
-                f.contact = contacts.SingleOrDefault(s => s.Id == f.contact.Id) ?? f.contact;
+                f.Contact = contacts.SingleOrDefault(s => s.Id == f.Contact.Id) ?? f.Contact;
 
                 f.tags = tagRelations.Where(w => w.Object.ObjectName == f.ObjectName).Where(w => w.Object.Id == f.Id).Select(s => s.Tag).ToList();
 
@@ -101,7 +101,7 @@ namespace SevDeskClient
         public static List<Invoice> GetDeliquentInvoices() {
 
             return Invoice.GetList(embed: new string[] { "lastDunningDate", "tags" }, filter: new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("delinquent", "true"), new KeyValuePair<string, string>("status", "200") })
-                .Where(w => (w.lastDunningDate is null ? w.invoiceDate : DateTimeOffset.FromUnixTimeSeconds(w.lastDunningDate.Value).DateTime) < DateTime.Now.AddDays(-18)
+                .Where(w => (w.lastDunningDate is null ? w.InvoiceDate : DateTimeOffset.FromUnixTimeSeconds(w.lastDunningDate.Value).DateTime) < DateTime.Now.AddDays(-18)
                 & w.dunningLevel < 3
                 & !w.tags.Any(a => a.name.Contains("keine-Mahnung")))
                 .Select(s => s).ToList();
