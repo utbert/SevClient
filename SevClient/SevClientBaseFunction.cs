@@ -58,9 +58,10 @@ namespace SevDeskClient
             }
 
             IRestResponse response = restClient.Execute(restRequest);
+
             var deserialized = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
 
-            if (limit == 0)
+            if (limit == 0 & deserialized.objects != null)
             {
                 limit = 200;
                 while (deserialized.objects.Count < deserialized.total - 1)
@@ -72,7 +73,8 @@ namespace SevDeskClient
                     deserialized.objects.AddRange(JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore }).objects.ToList());
                 }
             }
-            return deserialized.objects.ToList();
+
+            return deserialized.objects == null ? new List<T>() :deserialized.objects.ToList() ;
         }
         public HttpStatusCode Update()
         {

@@ -1,0 +1,10 @@
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\bin\Debug\netstandard2.0\SevClient.deps.json
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\bin\Debug\netstandard2.0\SevClient.dll
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\bin\Debug\netstandard2.0\SevClient.pdb
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.csproj.AssemblyReference.cache
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.AssemblyInfoInputs.cache
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.AssemblyInfo.cs
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.csproj.CoreCompileInputs.cache
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.dll
+C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\obj\Debug\netstandard2.0\SevClient.pdb
