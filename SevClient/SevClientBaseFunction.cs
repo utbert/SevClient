@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using static SevDeskClient.SevClient;
 
 namespace SevDeskClient
@@ -59,7 +60,7 @@ namespace SevDeskClient
 
             IRestResponse response = restClient.Execute(restRequest);
 
-            var deserialized = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+            var deserialized = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int?(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
 
             if (limit == 0 & deserialized.objects != null)
             {
@@ -74,7 +75,7 @@ namespace SevDeskClient
                 }
             }
 
-            return deserialized.objects == null ? new List<T>() :deserialized.objects.ToList() ;
+            return deserialized.objects == null ? new List<T>() : deserialized.objects.ToList();
         }
         public HttpStatusCode Update()
         {
@@ -129,7 +130,10 @@ namespace SevDeskClient
 
             restRequest.AddParameter("id", this.Id);
             restRequest.AddParameter("download", "true");
-            return new MemoryStream(restClient.DownloadData(restRequest));
+            var response = restClient.ExecuteAsync(restRequest);
+            response.Wait();
+            return new MemoryStream(response.Result.RawBytes);
+
         }
     }
 }
