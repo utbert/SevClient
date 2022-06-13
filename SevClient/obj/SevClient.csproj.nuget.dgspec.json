@@ -52,11 +52,11 @@
             },
             "RestSharp": {
               "target": "Package",
-              "version": "[106.13.0, )"
+              "version": "[107.3.0, )"
             },
             "RestSharp.Serializers.NewtonsoftJson": {
               "target": "Package",
-              "version": "[106.13.0, )"
+              "version": "[107.3.0, )"
             }
           },
           "imports": [

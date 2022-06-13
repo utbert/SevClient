@@ -34,7 +34,7 @@ namespace SevDeskClient
         {
             categories = Category.GetList();
             checkAccounts = CheckAccount.GetList();
-            //checkAccountTransactions;
+            //checkAccountTransactions = CheckAccountTransaction.GetList();
             //checkAccountTransactionLogs;
             textTemplates = TextTemplate.GetList();
             contacts = Contact.GetList();

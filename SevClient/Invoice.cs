@@ -120,9 +120,9 @@ namespace SevDeskClient
             }
 
             restRequest.AddJsonBody(new { invoice = this, invoicePosSave = positions });
-            restRequest.Method = Method.POST;
+            restRequest.Method = Method.Post;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             invoice = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new { Invoice = new Invoice() } }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects.Invoice;
             return response.StatusCode;
         }
@@ -135,9 +135,9 @@ namespace SevDeskClient
             restRequest.Resource = $"Invoice/{this.Id}/bookAmmount";
 
             restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
-            restRequest.Method = Method.PUT;
+            restRequest.Method = Method.Put;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             // JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new { Invoice = new Invoice() } }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects.Invoice;
             return response.StatusCode;
         }
@@ -149,9 +149,9 @@ namespace SevDeskClient
 
             restRequest.AddQueryParameter("invoiceType", invType);
             restRequest.AddQueryParameter("useNextNumber", useNextNumber.ToString());
-            restRequest.Method = Method.GET;
+            restRequest.Method = Method.Get;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             reNr = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = "" }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects;
             return response.StatusCode;
         }
@@ -162,9 +162,9 @@ namespace SevDeskClient
 
 
             restRequest.AddJsonBody(new { invoice = this });
-            restRequest.Method = Method.POST;
+            restRequest.Method = Method.Post;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             Invoice invoice = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new Invoice() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects;
 
             // SaveInvoice

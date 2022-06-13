@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using static SevDeskClient.SevClient;
 
@@ -57,20 +58,21 @@ namespace SevDeskClient
                 }
                 restRequest.AddParameter("embed", String.Join(",", embed));
             }
-
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.GetAsync(restRequest).Result;
 
             var deserialized = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int?(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
-
+            
             if (limit == 0 & deserialized.objects != null)
             {
+                
                 limit = 200;
                 while (deserialized.objects.Count < deserialized.total - 1)
                 {
                     //var test = restRequest.Parameters.Find(f => f.Name == "offset").Value;
-                    restRequest.Parameters[restRequest.Parameters.FindIndex(i => i.Name == "offset")].Value = limit;
+                    restRequest.AddOrUpdateParameter("offset", limit);
                     limit = limit + 200;
-                    response = restClient.Execute(restRequest);
+
+                    response = restClient.GetAsync(restRequest).Result;
                     deserialized.objects.AddRange(JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore }).objects.ToList());
                 }
             }
@@ -85,8 +87,7 @@ namespace SevDeskClient
 
             restRequest.AddJsonBody(this);
             restRequest.RequestFormat = DataFormat.Json;
-            restRequest.Method = Method.PUT;
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.PutAsync(restRequest).Result;
 
             object returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new object() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;
             return response.StatusCode;
@@ -97,10 +98,8 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = ObjectName;
             restRequest.AddJsonBody(this);
-            restRequest.Method = Method.POST;
 
-
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.PostAsync(restRequest).Result;
 
             returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = (T)Activator.CreateInstance(typeof(T)) }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;
             //returnvalue = JsonConvert.DeserializeObject(response.Content, type: T[]);
@@ -113,10 +112,9 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = $"{ObjectName}/{this.Id}";
             restRequest.AddParameter("id", this.Id);
-            restRequest.Method = Method.DELETE;
 
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.DeleteAsync(restRequest).Result;
             return response.StatusCode;
         }
     }
@@ -127,12 +125,12 @@ namespace SevDeskClient
         {
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = $"{this.ObjectName}/{this.Id}/getPdf";
-
+            //restRequest.Timeout = 60000;
             restRequest.AddParameter("id", this.Id);
             restRequest.AddParameter("download", "true");
-            var response = restClient.ExecuteAsync(restRequest);
-            response.Wait();
-            return new MemoryStream(response.Result.RawBytes);
+
+            byte[] response = restClient.DownloadDataAsync(restRequest).Result;
+            return new MemoryStream(response);
 
         }
     }

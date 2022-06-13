@@ -15,6 +15,7 @@ namespace SevDeskClient
 
         public SevClient(string token)
         {
+            restClient.DefaultParameters.RemoveParameter("token");
             restClient.AddDefaultParameter("token", token, ParameterType.QueryString);
 
             JsonSerializerSettings DefaultSettings = new JsonSerializerSettings
@@ -30,9 +31,10 @@ namespace SevDeskClient
             restClient.UseNewtonsoftJson(DefaultSettings);
 
         }
+
         protected SevClient()
         {
         }
     }
-    
+
 }

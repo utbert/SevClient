@@ -43,10 +43,10 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = tagRelation.ObjectName;
             restRequest.AddJsonBody(tagRelation);
-            restRequest.Method = Method.POST;
+            restRequest.Method = Method.Post;
 
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
 
             returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = (TagRelation)Activator.CreateInstance(typeof(TagRelation)) }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;
             //returnvalue = JsonConvert.DeserializeObject(response.Content, type: T[]);
