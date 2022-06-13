@@ -35,15 +35,15 @@ namespace SevDeskClient
         [JsonProperty("translationCode")]
         public object TranslationCode { get; set; }
 
-        public List<DocumentFolder> GetChildFolder(List<DocumentFolder> documentFolders = null)
-        {
-            List<DocumentFolder> folders = SevDesk.documentFolders.Where(s => s.Parent?.Id == this.Id).ToList();
-            return folders;
-        }
+        //public List<DocumentFolder> GetChildFolder(List<DocumentFolder> documentFolders = null)
+        //{
+        //    List<DocumentFolder> folders = SevDesk.documentFolders.Where(s => s.Parent?.Id == this.Id).ToList();
+        //    return folders;
+        //}
 
-        public List<Document> GetDocuments()
-        {
-            return SevDesk.documents.Where(w => w.Folder?.Id == this.Id).ToList();
-        }
+        //public List<Document> GetDocuments()
+        //{
+        //    return SevDesk.documents.Where(w => w.Folder?.Id == this.Id).ToList();
+        //}
     }
 }

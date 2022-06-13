@@ -7,8 +7,8 @@ namespace SevDeskClient
 {
     public class SevUser : SevClientObject<SevUser>
     {
-        [JsonProperty("id")]
-        public override string Id { get; set; } = "236508";
+        //[JsonProperty("id")]
+        //public override string Id { get; set; } = "236508";
 
         [JsonProperty("objectName")]
         public override string ObjectName { get; set; } = "SevUser";
@@ -20,7 +20,7 @@ namespace SevDeskClient
         public DateTime Create { get; set; }
 
         [JsonProperty("update")]
-        public DateTime Update { get; set; }
+        public DateTime _Update { get; set; }
 
         [JsonProperty("fullname")]
         public string Fullname { get; set; }
@@ -49,8 +49,8 @@ namespace SevDeskClient
         [JsonProperty("memberCode")]
         public string MemberCode { get; set; }
 
-        [JsonProperty("sevClient")]
-        public SevClient SevClient { get; set; }
+        //[JsonProperty("sevClient")]
+        //public SevClient SevClient { get; set; }
 
         [JsonProperty("lastLogin")]
         public DateTime? LastLogin { get; set; }

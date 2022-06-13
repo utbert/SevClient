@@ -3,11 +3,11 @@ using Newtonsoft.Json.Serialization;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
-
-
+using System.Reflection;
 
 namespace SevDeskClient
 {
@@ -73,7 +73,7 @@ namespace SevDeskClient
         public string sumGrossAccounting { get; set; }
         public string paidAmount { get; set; }
         public string customerInternalNote { get; set; }
-        public string showNet { get; set; }
+        public string showNet { get; set; } = "false";
         public string enshrined { get; set; }
         public string sendType { get; set; } = "VP";
         public string deliveryDateUntil { get; set; }
@@ -84,9 +84,10 @@ namespace SevDeskClient
 
         public Invoice()
         {
+
             // Standartwerte festlegen
             //this.headText = "<p>wir erlauben uns, unsere Lieferung/Leistung wie folgt in Rechnung zu stellen:<br/></p>";
-            this.headText = SevDesk.textTemplates?.SingleOrDefault(s => s.Main == "1" & s.ObjectType == "RE" & s.TextType == "HEAD").Text ?? "";
+            //this.headText = SevDesk.textTemplates?.SingleOrDefault(s => s.Main == "1" & s.ObjectType == "RE" & s.TextType == "HEAD").Text ?? "";
             //this.footText = "<p><font color = \"red\">BITTE BEACHTEN:<br/>" +
             //                "Das Protokoll für diese Wartung wurde, durch uns, elektronisch an Ihren Aufgabenträger übermittelt. Leider ist es uns nicht möglich zu prüfen ob dieser die Datenübermittlung erhalten hat, oder korrekt verarbeiten konnte. Bitte setzten Sie sich dazu mit Ihrem Aufgabenträger binnen 14 Tagen in Verbindung und lassen Sie sich den Erhalt des Wartungsprotokolls bestätigen. Wir behalten uns vor, nach 14 Tagen ab Rechnungsdatum, eine Bearbeitungsgebühr für einen nachträglichen Protokollversand zu erheben.</font></p>" +
             //                "<p>Leider ist es uns vorerst aus Technischen Gründen(PSD2 Umstellung der Banken) nicht mehr möglich Lastschriften einzuziehen.Wir bitten daher um Überweisung der Rechnung.</p>" +
@@ -99,8 +100,9 @@ namespace SevDeskClient
             //                "<p>Nach dem geltenden Schwarzarbeitbekämpfungsgesetz §14 Abs.4 Satz 1 Nr.9 UStG sind wir verpflichtet, Sie darauf hinzuweisen, dass Sie unsere Rechnung und Ihren Zahlungsbeleg zwei Jahre lang aufbewahren müssen.<br/></p>" +
             //                "<p>Gelieferte Waren bleiben, auch im verbautem Zustand, bis zur vollständigen Bezahlung, unser Eigentum.</p>";
             //this.footText = "<p style=\"font-size: 1em;\">Wir bedanken uns für Ihren Auftrag und verbleiben mit freundlichen Grüßen.<br></p><p style=\"margin-bottom: 15px; font-size: 0.8em; font-family: helvetica, sans-serif; color: rgb(51, 51, 51); overflow-wrap: break-word;\">Nach dem geltenden Schwarzarbeitbekämpfungsgesetz §14 Abs.4 Satz 1 Nr.9 UStG sind wir verpflichtet, Sie darauf hinzuweisen, dass Sie unsere Rechnung und Ihren Zahlungsbeleg zwei Jahre lang aufbewahren müssen.&nbsp;Gelieferte Waren bleiben, auch im verbautem Zustand, bis zur vollständigen Bezahlung, unser Eigentum.</p><hr style=\"margin-top: 15px; margin-bottom: 15px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-style: initial; border-bottom-style: initial; border-left-style: initial; border-top-style: solid; border-top-color: rgb(204, 204, 204); font-size: 1em; font-family: helvetica, sans-serif; color: rgb(51, 51, 51);\"><p style=\"margin-bottom: 15px; font-size: 1em; font-family: helvetica, sans-serif; color: rgb(51, 51, 51); overflow-wrap: break-word;\">SEPA Lastschriftmandat für wiederkehrende Zahlungen - Bitte abtrennen und im Original zurück, falls gewünscht.</p><p style=\"margin-bottom: 15px; font-size: 0.8em; font-family: helvetica, sans-serif; color: rgb(51, 51, 51); overflow-wrap: break-word;\">Zahlungsempfänger: Umwelttechnik Ebert - Lauenhainer Hauptstraße 18 - 08451 Crimmitschau<br>Gläubiger-ID: DE29ZZZ00001932269 - Mandatsreferenz:&nbsp;[%KUNDENNUMMER%] <br>Ich ermächtige die Firma Umwelttechnik Ebert, Zahlungen von meinem Konto mittels Lastschrifteinzuziehen. Zugleich weise ich mein Kreditinstitut an, die von Umwelttechnik Ebert (Thomas Ebert) auf mein Kontogezogenen Lastschriften einzulösen.&nbsp;Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen</p><table style=\"font-size: 1.1em;\"><colgroup><col width=\"23.77521613832853%\"><col width=\"76.0806916426513%\"></colgroup><thead></thead><tbody><tr><td>Kontoinhaber:</td><td>[%ADRESSE%]</td></tr><tr><td>Kreditinstitut:</td><td>_________________________________________________________________<br></td></tr><tr><td>IBAN:</td><td>_________________________________________________________________</td></tr><tr><td>BIC:</td><td>_________________________________________________________________<br></td></tr><tr><td>Datum/Unterschrift:</td><td>[%RECHNUNGSDATUM%] /&nbsp;<br></td></tr></tbody></table>";
-            this.footText = SevDesk.textTemplates?.SingleOrDefault(s => s.Name == "Wartungsrechnung Fuß mit SEPA").Text ?? "";
+            //this.footText = SevDesk.textTemplates?.SingleOrDefault(s => s.Name == "Wartungsrechnung Fuß mit SEPA").Text ?? "";
         }
+
         //Invoice
         public HttpStatusCode FactorySaveInvoice(List<InvoicePos> positions, out Invoice invoice)
         {
@@ -119,25 +121,35 @@ namespace SevDeskClient
 
             }
 
-            restRequest.AddJsonBody(new { invoice = this, invoicePosSave = positions });
-            restRequest.Method = Method.POST;
+            if (string.IsNullOrWhiteSpace(this.address)) restRequest.AddQueryParameter("takeDefaultAddress", "true");
 
-            IRestResponse response = restClient.Execute(restRequest);
+            restRequest.AddJsonBody(new { invoice = this, invoicePosSave = positions });
+            restRequest.Method = Method.Post;
+
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             invoice = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new { Invoice = new Invoice() } }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects.Invoice;
             return response.StatusCode;
         }
-        public HttpStatusCode BookAmmount(CheckAccount cA = null, string sumGross = "")
+        public HttpStatusCode BookAmount(CheckAccount cA = null, string sumGross = "")
         {
             sumGross = string.IsNullOrWhiteSpace(sumGross) ? this.sumGross : sumGross;
-            cA = cA ?? new CheckAccount() { Id = "484485" }; // <- Kasse
+            cA = cA ?? new CheckAccount() { Id = "484485" }; // <- Kasse 484485
 
             RestRequest restRequest = new RestRequest();
-            restRequest.Resource = $"Invoice/{this.Id}/bookAmmount";
+            restRequest.Resource = $"Invoice/{this.Id}/bookAmount";
 
-            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
-            restRequest.Method = Method.PUT;
+            restRequest.AddJsonBody(new
+            {
+                amount = sumGross,
+                date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(),
+                type = "N",
+                checkAccount = cA,
+                createFeed = "true",
+                checkAccountTransaction = "null"
+            });
+            restRequest.Method = Method.Put;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             // JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new { Invoice = new Invoice() } }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects.Invoice;
             return response.StatusCode;
         }
@@ -149,9 +161,9 @@ namespace SevDeskClient
 
             restRequest.AddQueryParameter("invoiceType", invType);
             restRequest.AddQueryParameter("useNextNumber", useNextNumber.ToString());
-            restRequest.Method = Method.GET;
+            restRequest.Method = Method.Get;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             reNr = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = "" }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects;
             return response.StatusCode;
         }
@@ -162,9 +174,9 @@ namespace SevDeskClient
 
 
             restRequest.AddJsonBody(new { invoice = this });
-            restRequest.Method = Method.POST;
+            restRequest.Method = Method.Post;
 
-            IRestResponse response = restClient.Execute(restRequest);
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             Invoice invoice = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new Invoice() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects;
 
             // SaveInvoice

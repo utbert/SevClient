@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace SevDeskClient
@@ -80,5 +82,47 @@ namespace SevDeskClient
         public object Connection { get; set; }
 
         public CheckAccount() { }
+
+        public HttpStatusCode MapTransactions(out MapTransactionsResult result)
+        {
+            RestRequest restRequest = new RestRequest();
+            restRequest.Resource = $"{ObjectName}/{Id}/mapTransactions";
+            restRequest.AddParameter("embed", "openReminderCharge");
+            restRequest.Method = Method.Post;
+
+            RestResponse response = restClient.ExecuteAsync(restRequest).Result;
+            result = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new MapTransactionsResult() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects;
+
+
+            HttpStatusCode httpStatusCode = response.StatusCode;
+            return httpStatusCode;
+        }
+
+
+    }
+    public class MapTransactionsResult
+    {
+        [JsonProperty("successCount")]
+        public int SuccessCount { get; set; }
+
+        [JsonProperty("suggestionCount")]
+        public int SuggestionCount { get; set; }
+
+        [JsonProperty("suggestions")]
+        public List<Suggestion> Suggestions { get; set; }
+    }
+    public class Suggestion
+    {
+        [JsonProperty("transaction")]
+        public CheckAccountTransaction Transaction { get; set; }
+
+        [JsonProperty("transactionRemainingAmount")]
+        public string TransactionRemainingAmount { get; set; }
+
+        [JsonProperty("document")]
+        public SevClientObject Document { get; set; }
+
+        [JsonProperty("documentDebit")]
+        public string DocumentDebit { get; set; }
     }
 }

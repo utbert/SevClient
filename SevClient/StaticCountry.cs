@@ -36,7 +36,7 @@ namespace SevDeskClient
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Not Supported", true)]
-        public new HttpStatusCode Update()
+        public HttpStatusCode Update()
         {
             throw new NotSupportedException();
         }

@@ -107,6 +107,12 @@ namespace SevDeskClient
         [JsonProperty("tags"), JsonIgnoreSerialization]
         public List<Tag> Tags { get; set; }
 
+        [JsonProperty("parent"), JsonIgnoreSerialization]
+        public Contact Parent { get; set; }
+
+        [JsonProperty("hasChildren"), JsonIgnoreSerialization]
+        public bool hasChildren { get; set; }
+
         /// <summary>
         /// Represents a list of communication ways
         /// </summary>

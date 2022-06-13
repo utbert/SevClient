@@ -64,7 +64,7 @@ namespace SevDeskClient
 
             restRequest.AddParameter("id", this.Id);
             restRequest.AddParameter("download", "true");
-            return new MemoryStream(restClient.DownloadData(restRequest));
+            return new MemoryStream(restClient.DownloadDataAsync(restRequest).Result);
         }
 
         public void Download(FileInfo fileInfo) {
