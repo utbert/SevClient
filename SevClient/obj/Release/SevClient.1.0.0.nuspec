@@ -7,13 +7,23 @@
     <description>Package Description</description>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
+<<<<<<< HEAD
         <dependency id="Newtonsoft.Json" version="13.0.2" exclude="Build,Analyzers" />
         <dependency id="RestSharp" version="108.0.3" exclude="Build,Analyzers" />
         <dependency id="RestSharp.Serializers.NewtonsoftJson" version="108.0.3" exclude="Build,Analyzers" />
+=======
+        <dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
+        <dependency id="RestSharp" version="106.13.0" exclude="Build,Analyzers" />
+        <dependency id="RestSharp.Serializers.NewtonsoftJson" version="106.13.0" exclude="Build,Analyzers" />
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
       </group>
     </dependencies>
   </metadata>
   <files>
+<<<<<<< HEAD
     <file src="C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\bin\Release\netstandard2.0\SevClient.dll" target="lib\netstandard2.0\SevClient.dll" />
+=======
+    <file src="C:\Users\thoma\OneDrive\02_Firma\Software\SevClient\SevClient\bin\Release\netstandard2.0\win10-x64\SevClient.dll" target="lib\netstandard2.0\SevClient.dll" />
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
   </files>
 </package>

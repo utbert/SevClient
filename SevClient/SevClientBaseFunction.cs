@@ -61,10 +61,14 @@ namespace SevDeskClient
             RestResponse response = restClient.GetAsync(restRequest).Result;
 
             var deserialized = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int?(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
-
+            
             if (limit == 0 & deserialized.objects != null)
             {
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
                 limit = 200;
                 while (deserialized.objects.Count < deserialized.total - 1)
                 {

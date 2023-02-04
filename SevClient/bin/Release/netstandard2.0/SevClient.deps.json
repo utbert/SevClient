@@ -10,14 +10,21 @@
       "SevClient/1.0.0": {
         "dependencies": {
           "NETStandard.Library": "2.0.3",
+<<<<<<< HEAD
           "Newtonsoft.Json": "13.0.2",
           "RestSharp": "108.0.3",
           "RestSharp.Serializers.NewtonsoftJson": "108.0.3"
+=======
+          "Newtonsoft.Json": "13.0.1",
+          "RestSharp": "106.13.0",
+          "RestSharp.Serializers.NewtonsoftJson": "106.13.0"
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
         },
         "runtime": {
           "SevClient.dll": {}
         }
       },
+<<<<<<< HEAD
       "Microsoft.Bcl.AsyncInterfaces/5.0.0": {
         "dependencies": {
           "System.Threading.Tasks.Extensions": "4.5.4"
@@ -29,12 +36,15 @@
           }
         }
       },
+=======
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
         }
       },
+<<<<<<< HEAD
       "Newtonsoft.Json/13.0.2": {
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {
@@ -139,6 +149,33 @@
           "lib/netstandard2.0/System.Threading.Tasks.Extensions.dll": {
             "assemblyVersion": "4.2.0.1",
             "fileVersion": "4.6.28619.1"
+=======
+      "Newtonsoft.Json/13.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.1.25517"
+          }
+        }
+      },
+      "RestSharp/106.13.0": {
+        "runtime": {
+          "lib/netstandard2.0/RestSharp.dll": {
+            "assemblyVersion": "106.13.0.0",
+            "fileVersion": "106.13.0.0"
+          }
+        }
+      },
+      "RestSharp.Serializers.NewtonsoftJson/106.13.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "RestSharp": "106.13.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/RestSharp.Serializers.NewtonsoftJson.dll": {
+            "assemblyVersion": "106.13.0.0",
+            "fileVersion": "106.13.0.0"
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
           }
         }
       }
@@ -150,6 +187,7 @@
       "serviceable": false,
       "sha512": ""
     },
+<<<<<<< HEAD
     "Microsoft.Bcl.AsyncInterfaces/5.0.0": {
       "type": "package",
       "serviceable": true,
@@ -157,6 +195,8 @@
       "path": "microsoft.bcl.asyncinterfaces/5.0.0",
       "hashPath": "microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512"
     },
+=======
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
       "serviceable": true,
@@ -171,6 +211,7 @@
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
+<<<<<<< HEAD
     "Newtonsoft.Json/13.0.2": {
       "type": "package",
       "serviceable": true,
@@ -240,6 +281,28 @@
       "sha512": "sha512-zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
       "path": "system.threading.tasks.extensions/4.5.4",
       "hashPath": "system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+=======
+    "Newtonsoft.Json/13.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "path": "newtonsoft.json/13.0.1",
+      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
+    },
+    "RestSharp/106.13.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vwUdmmtC5vtePeNfBWnFcixBF2KjUeVv3ss4ZFzCIkOf7NB7W/9qX8JNZD9DOrz2yGk4AJW8k9znwgPZhnoiNg==",
+      "path": "restsharp/106.13.0",
+      "hashPath": "restsharp.106.13.0.nupkg.sha512"
+    },
+    "RestSharp.Serializers.NewtonsoftJson/106.13.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/nPcSkeyRiK4+q/IGlVuv9P2FYChIRvrVpm4d1/iGsMFzTu4n2VyXPAm7IcnvLdR/oczrAQ28w74Ejkf0cbd/Q==",
+      "path": "restsharp.serializers.newtonsoftjson/106.13.0",
+      "hashPath": "restsharp.serializers.newtonsoftjson.106.13.0.nupkg.sha512"
+>>>>>>> f2a43b8c161c2485289090c0bd1cdfadd15a3b38
     }
   }
 }
