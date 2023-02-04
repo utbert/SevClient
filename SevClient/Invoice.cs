@@ -121,10 +121,15 @@ namespace SevDeskClient
 
             }
 
+
             if (string.IsNullOrWhiteSpace(this.address)) restRequest.AddQueryParameter("takeDefaultAddress", "true");
 
             restRequest.AddJsonBody(new { invoice = this, invoicePosSave = positions });
             restRequest.Method = Method.Post;
+
+
+
+
 
             RestResponse response = restClient.ExecuteAsync(restRequest).Result;
             invoice = JsonConvert.DeserializeAnonymousType(response.Content, new { objects = new { Invoice = new Invoice() } }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore }).objects.Invoice;
@@ -138,6 +143,7 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = $"Invoice/{this.Id}/bookAmount";
 
+
             restRequest.AddJsonBody(new
             {
                 amount = sumGross,
@@ -147,6 +153,11 @@ namespace SevDeskClient
                 createFeed = "true",
                 checkAccountTransaction = "null"
             });
+
+            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
+
+
+            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
             restRequest.Method = Method.Put;
 
             RestResponse response = restClient.ExecuteAsync(restRequest).Result;
