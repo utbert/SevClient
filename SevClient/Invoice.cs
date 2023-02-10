@@ -144,6 +144,8 @@ namespace SevDeskClient
             restRequest.Resource = $"Invoice/{this.Id}/bookAmount";
 
 
+            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
+=========
             restRequest.AddJsonBody(new
             {
                 amount = sumGross,
@@ -151,13 +153,13 @@ namespace SevDeskClient
                 type = "N",
                 checkAccount = cA,
                 createFeed = "true",
-                checkAccountTransaction = "null"
+
+            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
+
+
+            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
             });
-
-            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
-
-
-            restRequest.AddJsonBody(new { ammount = sumGross, date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), type = "null", checkAccount = cA, createFeed = "true", checkAccountTransaction = "null" });
+>>>>>>>>> Temporary merge branch 2
             restRequest.Method = Method.Put;
 
             RestResponse response = restClient.ExecuteAsync(restRequest).Result;
