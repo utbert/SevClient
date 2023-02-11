@@ -149,10 +149,7 @@ namespace SevDeskClient
                 type = "N",
                 checkAccount = cA,
                 createFeed = "true"
-            };
-
-            
-
+            });
 
             restRequest.Method = Method.Put;
 
@@ -188,7 +185,7 @@ namespace SevDeskClient
 
             // SaveInvoice
             invoice.status = "200";
-            invoice.sendDate = DateTime.Now.ToLongDateString();
+            invoice.sendDate = DateTime.Now.ToShortDateString();
 
             HttpStatusCode httpStatusCode = invoice.FactorySaveInvoice(null, out dunningInvoice);
 
