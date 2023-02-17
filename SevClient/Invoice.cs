@@ -185,6 +185,11 @@ namespace SevDeskClient
 
             // SaveInvoice
             invoice.status = "200";
+            invoice.timeToPay = "7";
+            if (this.dunningLevel >= 3)
+            {
+                invoice.header = $"Letzte Mahnung - Rechnung Nr. {this.invoiceNumber}";
+            }
             invoice.sendDate = DateTime.Now.ToShortDateString();
 
             HttpStatusCode httpStatusCode = invoice.FactorySaveInvoice(null, out dunningInvoice);

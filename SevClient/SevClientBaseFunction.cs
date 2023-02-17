@@ -157,7 +157,6 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = ObjectName;
             restRequest.AddJsonBody(this);
-
             RestResponse response = restClient.PostAsync(restRequest).Result;
 
             returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = (T)Activator.CreateInstance(typeof(T)) }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;
@@ -171,7 +170,6 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = $"{ObjectName}/{this.Id}";
             restRequest.AddParameter("id", this.Id);
-
 
             RestResponse response = restClient.DeleteAsync(restRequest).Result;
             return response.StatusCode;
