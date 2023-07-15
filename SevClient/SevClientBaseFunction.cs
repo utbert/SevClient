@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,13 +13,21 @@ using static SevDeskClient.SevClient;
 namespace SevDeskClient
 {
 
-    public class SevClientObject : SevClient
+    public class SevClientObject : SevClient, ICloneable
     {
         [JsonProperty("id")]
         public virtual string Id { get; set; }
 
         [JsonProperty("objectName")]
         public virtual string ObjectName { get; set; }
+
+        [JsonProperty("additionalInformation")]
+        public string AdditionalInformation { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
     public abstract class SevClientObject<T> : SevClientObject where T : SevClientObject<T>, new()
     {
@@ -61,7 +70,7 @@ namespace SevDeskClient
             RestResponse response = restClient.GetAsync(restRequest).Result;
 
             var deserialized = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int?(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
-            
+
             if (limit == 0 & deserialized.objects != null)
             {
                 limit = 200;
@@ -119,10 +128,20 @@ namespace SevDeskClient
 
             //restRequest.AddJsonBody(this);
             restRequest.RequestFormat = DataFormat.Json;
-            RestResponse response = restClient.GetAsync(restRequest).Result;
-
-            returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = (T)Activator.CreateInstance(typeof(T)) }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;
-            return response.StatusCode;
+            RestResponse response = restClient.ExecuteGetAsync(restRequest).Result;
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                //returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = (T)Activator.CreateInstance(typeof(T)) }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;
+                returnvalue = JsonConvert.DeserializeAnonymousType(response.Content, new { total = new int?(), objects = new List<T>() }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore, NullValueHandling = NullValueHandling.Ignore }).objects[0];
+                return response.StatusCode;
+            }
+            else
+            {
+                dynamic content = JsonConvert.DeserializeObject(response.Content);
+                var x = content.error.message;
+                returnvalue = null;
+                return response.StatusCode;
+            }
         }
 
         public T Get()
@@ -157,6 +176,7 @@ namespace SevDeskClient
             RestRequest restRequest = new RestRequest();
             restRequest.Resource = ObjectName;
             restRequest.AddJsonBody(this);
+            restRequest.RequestFormat = DataFormat.Json;
             RestResponse response = restClient.PostAsync(restRequest).Result;
 
             returnvalue = (JsonConvert.DeserializeAnonymousType(response.Content, new { objects = (T)Activator.CreateInstance(typeof(T)) }, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore })).objects;

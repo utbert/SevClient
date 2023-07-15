@@ -7,7 +7,7 @@
     <description>Package Description</description>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Newtonsoft.Json" version="13.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
         <dependency id="RestSharp" version="108.0.3" exclude="Build,Analyzers" />
         <dependency id="RestSharp.Serializers.NewtonsoftJson" version="108.0.3" exclude="Build,Analyzers" />
       </group>

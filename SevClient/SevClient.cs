@@ -35,6 +35,12 @@ namespace SevDeskClient
         protected SevClient()
         {
         }
+
+        public static void ChangeToken(string token)
+        {
+            restClient.DefaultParameters.RemoveParameter("token");
+            restClient.AddDefaultParameter("token", token, ParameterType.QueryString);
+        }
     }
 
 }
